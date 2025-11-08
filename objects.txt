@@ -1,0 +1,137 @@
+User:
+{
+  "id": "usr_5f2a9b18d3c84102b4e7a8f3",
+  "name": {
+    "first": "Miguel",
+    "last": "Zavala Ventura"
+  },
+  "email": "miguel.zavala@example.com",
+  "phone": "+52 555 123 4567",
+  "wallet": {
+    "interledgerAddress": "ilp.network.miguelzavala.wallet",
+    "publicKey": "b92f4...abcde",
+    "currency": "MXN",
+    "provider": "InterledgerTestNet",
+    "balance": 0
+  },
+
+  "status": "active",
+  "createdAt": "2025-11-08T19:12:03Z",
+  "updatedAt": "2025-11-08T19:12:03Z"
+}
+
+Project:
+{
+  "id": "prj_001",
+  "title": "Construcción de vivienda para familia López",
+  "description": "Proyecto de vivienda financiado a distancia, con control de entregas y pagos verificados.",
+  "ownerId": "usr_5f2a9b18d3c84102b4e7a8f3",
+  "participants": [
+  	{"userId": "usr_5f2a9b18d3c84102b4e7a8f3", "rol": "sender"},
+  	{"userId": "usr_5f2a9b18d3c84102b4e7a8f3", "rol": "reciber"},
+  	{"userId": "usr_5f2a9b18d3c84102b4e7a8f3", "rol": "sender"}
+  ],
+  "budget": {
+    "total": 250000,
+    "currency": "MXN"
+  },
+  "phases": [
+    { "id": "phs_design", "name": "Diseño", "requires": [
+    "req_001",
+    "req_002",
+    "req_003"
+  ] },
+    { "id": "phs_materials", "name": "Adquisición de materiales" },
+    { "id": "phs_execution", "name": "Ejecución" },
+    { "id": "phs_verification", "name": "Verificación final" }
+  ],
+  "status": "active",
+  "createdAt": "2025-11-08T19:12:03Z",
+  "updatedAt": "2025-11-08T19:12:03Z"
+}
+
+
+Require:
+{
+  "id": "req_001",
+  "projectId": "prj_001",
+  "name": "Materiales de construcción - etapa 1",
+  "description": "Compra de cemento, grava y acero para la base de la vivienda.",
+  "proofs": [
+    "prf_001",
+    "prf_002"
+  ],
+  "transactions": [
+    "txn_001",
+    "txn_002"
+  ],
+  "supplier": "userId",
+  "cost": {
+    "amount": 50000,
+    "currency": "MXN"
+  },
+  "progress": 80,
+  "status": "in_progress",
+  "createdAt": "2025-11-08T19:12:03Z",
+  "updatedAt": "2025-11-08T19:12:03Z"
+}
+
+
+Transaction:
+{
+  "id": "txn_001",
+  "requireId": "req_001",
+  "fromWallet": {
+    "interledgerAddress": "ilp.mx.sender001.wallet",
+    "userId": "usr_5f2a9b18d3c84102b4e7a8f3"
+  },
+  "toWallet": {
+    "interledgerAddress": "ilp.mx.receiver001.wallet",
+    "userId": "usr_5f3b9b18d3c84102b4e7a8f5"
+  },
+  "amount": 25000,
+  "currency": "MXN",
+  "provider": "InterledgerTestNet",
+  "reference": "TXN-ILP-20251108-001",
+  "status": "completed",
+  "timestamp": "2025-11-08T19:12:03Z"
+}
+
+Phase
+{
+  "id": "phs_materials",
+  "name": "Adquisición de materiales",
+  "projectId": "prj_001",
+  "description": "Compra, entrega y validación de insumos requeridos.",
+  "order": 2,
+  "status": "active",
+  "requires": [
+    "req_001",
+    "req_002",
+    "req_003"
+  ]
+}
+
+Proof:
+{
+  "id": "prf_001",
+  "requireId": "req_001",
+  "submittedBy": "usr_5f4c9b18d3c84102b4e7a8f7",
+  "phaseId": "phs_materials",
+  "description": "Factura y fotos de entrega del material en obra.",
+  "attachments": [
+    {
+      "type": "image",
+      "url": "https://example.com/uploads/proof_001_photo1.jpg"
+    },
+    {
+      "type": "document",
+      "url": "https://example.com/uploads/proof_001_invoice.pdf"
+    }
+  ],
+  "verificationNotes": "Los materiales coinciden con lo presupuestado.",
+  "status": "approved",
+  "submittedAt": "2025-11-08T19:15:00Z",
+  "verifiedAt": "2025-11-09T12:00:00Z"
+}
+
