@@ -55,8 +55,31 @@ export default class UserService {
       await userRef.set(newUser)
       return newUser
     } catch (error) {
-      console.error('Error registering user:', error)
-      throw new Error('Error registering user')
+      console.error('Error registrando usuario:', error)
+      throw new Error('Error registrando usuario')
+    }
+  }
+
+  public static async getAllUsers (): Promise<User[]> {
+    try {
+      // Leer desde archivo local
+      const usersFromFile = await readUsersFile()
+
+      // Leer desde Firebase
+      const snapshot = await db.collection('users').get()
+      const usersFromDb: User[] = snapshot.docs.map(doc => doc.data() as User)
+
+      // Combinar ambos (opcional, si quieres mantener consistencia)
+      const allUsers = [...usersFromFile, ...usersFromDb]
+
+      // Si quieres eliminar duplicados por id
+      const uniqueUsersMap = new Map<string, User>()
+      allUsers.forEach(user => uniqueUsersMap.set(user.id, user))
+
+      return Array.from(uniqueUsersMap.values())
+    } catch (error) {
+      console.error('Error consultando usuarios:', error)
+      throw new Error('Error consultando usuarios')
     }
   }
 }
