@@ -125,12 +125,12 @@ export default class ProjectService {
   // Agregar fase
   public static async addPhase(
     projectCustomId: string,
-    phase: ProjectPhase
+    phase: Omit<ProjectPhase, 'id'>
   ): Promise<void> {
     const snapshot = await db.collection('projects').where('id', '==', projectCustomId).get()
 
     if (snapshot.empty) {
-      throw new Error(`Project with id ${projectCustomId} not found`)
+      throw new Error(`Proyecto con id ${projectCustomId} no encontrado`)
     }
 
     const projectDoc = snapshot.docs[0].ref
