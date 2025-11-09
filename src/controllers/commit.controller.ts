@@ -106,7 +106,8 @@ export default class CommitController {
                 continueAccessToken: finalizedOutgoingPaymentGrant.access_token.value,
             });
 
-            res.status(200).json({ message: "Comando ejecutado con éxito", finalizedOutgoingPaymentGrant });
+            //res.status(200).json({ message: "Comando ejecutado con éxito", finalizedOutgoingPaymentGrant });
+            res.redirect(`${process.env.WEB_APP_REDIRECT_URL}`);
 
         } catch (error: any) {
             res.status(500).json({ message: "Error al ejecutar el comando", error: error });
