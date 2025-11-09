@@ -1,13 +1,31 @@
 # Agora API
 API Client for Agora Web App
 
-### Run locally
+### How it works
+
+Open Payments implementation its under POST /api/commit resource.
+
+Firts, we create a Future Outgoing Payment Grant until some operational platform conditions success. Then it uses the future grant to outgoing payment perform.
+
+
+### How to run locally
 
 1. Run `npm install`
-2. Download secret files from https://drive.google.com/drive/folders/1JFmFSCbs51NpOCWNBQM5FzUYX_3Tgo14?usp=sharing
+2. Download secret files from [Google Drive](https://drive.google.com/drive/folders/1JFmFSCbs51NpOCWNBQM5FzUYX_3Tgo14?usp=sharing)
 3. Put private.key file in root
 4. Put agora{...}.json file under src/config/
 5. Run `npm run dev` to start server, by default runing on port 4000.
 6. Optionally, import requests/Hackaton.postman_collection.json file in postman to see collections
 
-Note: Under POST /api/commit resource its implemented OpenPayments
+Note: Make sure running locally both projects: API Cliente and [Web App Cliente](https://github.com/IrvingSanchez/Agora-Web)
+
+### Team members
+
+* _>[Miguel Zavala](https://github.com/inatento)<_
+* _>[Fredy Nazario](https://github.com/7yderf)<_
+* _>[Irving Sánchez](https://github.com/IrvingSanchezConecta)<_
+
+### What comes next?
+
+We will complete the project after Hackathon :)
+
