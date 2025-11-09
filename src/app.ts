@@ -4,8 +4,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import dotenv from "dotenv";
 
-import userRoutes from "./routes/users.routes.js";
-import projectRoutes from "./routes/projects.routes.js";
+import routes from "./routes/index.js";
 
 dotenv.config();
 
@@ -16,11 +15,14 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
-// ✅ Registrar rutas
-app.use("/api/users", userRoutes);
-app.use("/api/projects", projectRoutes);
+app.use("/api", routes);
 
-// Manejo básico de errores
-app.use((req, res) => res.status(404).json({ message: "Not Found" }));
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+// app.use((req, res) => res.status(404).json({ message: "Not Found" }));
 
 export default app;
