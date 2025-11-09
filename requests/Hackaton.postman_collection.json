@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "8295729b-5fea-440a-9fde-fa7e23d44218",
+		"_postman_id": "9df394db-5a2f-4a74-a46f-2469d8f6d1e1",
 		"name": "Hackaton",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38261881"
+		"_exporter_id": "4077602"
 	},
 	"item": [
 		{
@@ -400,6 +400,67 @@
 						"projects",
 						"require",
 						"req_1b732dfa-4438-4fc7-b003-2be331f4db43"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Future Outgoing Payment Grant",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"donorWalletUrl\": \"https://ilp.interledger-test.dev/alicetest\",\n    \"debitAmount\": \"1000\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/commit/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"commit",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Perform Outgoing Payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"receiverWalletAddress\":\"https://ilp.interledger-test.dev/ferreteria\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/commit/grant/finalize",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"commit",
+						"grant",
+						"finalize"
 					]
 				}
 			},
