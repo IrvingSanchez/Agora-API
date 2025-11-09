@@ -28,81 +28,6 @@ import dotenv from 'dotenv';
 
     console.log({ userWalletAddress });
 
-    const nowIso = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')
-    const oneMonthSinglePayment = `R1/${nowIso}/P1M`
-
-    const futureOutgoingPaymentGrant = await client.grant.request(
-        {
-            url: userWalletAddress.authServer,
-        },
-        {
-            access_token: {
-                access: [
-                    {
-                        identifier: userWalletAddress.id,
-                        type: 'outgoing-payment',
-                        actions: ['create'],
-                        limits: {
-                            //interval: oneMonthSinglePayment,
-                            debitAmount: {
-                                assetCode: 'USD',
-                                assetScale: 2,
-                                value: '1000',
-                            },
-                        },
-                    },
-                ],
-            },
-            client: userWalletAddress.id,
-            interact: {
-                start: ['redirect']
-            },
-        },
-    );
-    console.log({ futureOutgoingPaymentGrant })
-
-
-
-
-
-    await Readline
-        .createInterface({
-            input: process.stdin,
-            output: process.stdout
-        })
-        .question("Presione Enter para continuar con el pago saliente...");
-
-
-    // 8. Finalizar la conseción del pago saliente
-    const finalizedOutgoingPaymentGrant = await client.grant.continue({
-        url: futureOutgoingPaymentGrant.continue.uri,
-        accessToken: futureOutgoingPaymentGrant.continue.access_token.value
-    });
-    console.log({ finalizedOutgoingPaymentGrant })
-
-    if (!isFinalizedGrant(finalizedOutgoingPaymentGrant)) {
-        throw new Error("Se espera que finalice la concesión")
-    }
-
-    console.log('SCOPES DEL TOKEN FINAL:');
-    console.log(JSON.stringify(finalizedOutgoingPaymentGrant.access_token.access, null, 2));
-
-
-
-    await Readline
-        .createInterface({
-            input: process.stdin,
-            output: process.stdout
-        })
-        .question("Presione Enter para continuar con el pago saliente...");
-
-
-
-
-
-
-
-
     const receivingWalletAddress = await client.walletAddress.get({
         url: "https://ilp.interledger-test.dev/ferreteria"
     });
@@ -194,7 +119,7 @@ import dotenv from 'dotenv';
     const outgoingPayment = await client.outgoingPayment.create(
         {
             url: userWalletAddress.resourceServer,
-            accessToken: finalizedOutgoingPaymentGrant.access_token.value
+            accessToken: "2AA5BAC0E5687A94A138"
         },
         {
             walletAddress: userWalletAddress.id,
