@@ -127,11 +127,11 @@ export default class ProjectService {
     })
   }
 
-  public static async addPhase (
+  public static async addPhase(
     projectCustomId: string,
     phase: Omit<ProjectPhase, 'id' | 'createdAt' | 'updatedAt'>
   ): Promise<ProjectPhase> {
-    // Buscar el proyecto por su id personalizado
+    // 🔹 Buscar el proyecto principal
     const snapshot = await db
       .collection('projects')
       .where('id', '==', projectCustomId)
@@ -144,6 +144,7 @@ export default class ProjectService {
     const projectDoc = snapshot.docs[0].ref
     const now = new Date().toISOString()
 
+    // 🔹 Crear la nueva phase
     const newPhase: ProjectPhase = {
       ...phase,
       id: `phs_${uuidv4()}`,
@@ -151,8 +152,11 @@ export default class ProjectService {
       updatedAt: now
     }
 
+    // 🔹 Guardar como subdocumento dentro del proyecto
+    await db.collection('phases').doc(newPhase.id).set(newPhase)
+
+    // 🔹 Actualizar metadata del proyecto
     await projectDoc.update({
-      phases: FieldValue.arrayUnion(newPhase),
       updatedAt: now
     })
 
@@ -260,5 +264,71 @@ public static async createTransaction(
     }
     await proofRef.set(newProof)
     return newProof
+  }
+  // 1️⃣ Traer todos los proyectos
+  public static async getAllProjects(): Promise<any[]> {
+    try {
+      const snapshot = await db.collection('projects').get()
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    } catch (error) {
+      console.error('Error obteniendo proyectos:', error)
+      throw new Error('Error obteniendo proyectos')
+    }
+  }
+
+  // 2️⃣ Traer todas las phases por projectId
+  public static async getPhasesByProject(projectId: string): Promise<any[]> {
+    try {
+      const projectSnapshot = await db.collection('projects').where('id', '==', projectId).get()
+      if (projectSnapshot.empty) {
+      throw new Error(`Require con id ${projectId} no encontrado`)
+    }
+        const projectDoc = projectSnapshot.docs[0]
+      return projectDoc.data().phases || []
+    } catch (error) {
+      console.error('Error obteniendo phases por proyecto:', error)
+      throw new Error('Error obteniendo phases por proyecto')
+    }
+  }
+
+  // 3️⃣ Traer una phase específica por phaseId (dentro de un projectId)
+public static async getPhaseById(phaseId: string): Promise<any> {
+  try {
+    // 🔹 Buscar el documento en la colección 'phases' usando el id personalizado
+    const snapshot = await db.collection('phases').where('id', '==', phaseId).get()
+
+    if (snapshot.empty) {
+      throw new Error(`Phase con id ${phaseId} no encontrada`)
+    }
+
+    // 🔹 Retornar el primer resultado encontrado
+    const doc = snapshot.docs[0]
+    return { id: doc.id, ...doc.data() }
+  } catch (error) {
+    console.error('Error obteniendo phase por ID:', error)
+    throw new Error('Error obteniendo phase por ID')
+  }
+}
+
+  // 🔹 Obtener todos los requires de un proyecto
+  public static async getRequiresByProjectId(projectId: string): Promise<Require[]> {
+    const snapshot = await db.collection('requires').where('projectId', '==', projectId).get()
+    if (snapshot.empty) return []
+    return snapshot.docs.map(doc => doc.data() as Require)
+  }
+
+  // 🔹 Obtener todos los requires de una fase
+  public static async getRequiresByPhaseId(phaseId: string): Promise<Require[]> {
+    const snapshot = await db.collection('requires').where('phaseId', '==', phaseId).get()
+    if (snapshot.empty) return []
+    return snapshot.docs.map(doc => doc.data() as Require)
+  }
+
+  // 🔹 Obtener require por su ID
+  public static async getRequireById(requireId: string): Promise<Require | null> {
+    const docRef = db.collection('requires').doc(requireId)
+    const doc = await docRef.get()
+    if (!doc.exists) return null
+    return doc.data() as Require
   }
 }
