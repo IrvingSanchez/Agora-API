@@ -9,6 +9,7 @@
     "start": "node dist/src/app.js"
   },
   "dependencies": {
+    "@interledger/open-payments": "^7.1.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
