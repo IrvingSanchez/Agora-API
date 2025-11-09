@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": { \"first\": \"Miguel\", \"last\": \"Zavala Ventura\" },\n  \"email\": \"miguel.zavala@example.com\",\n  \"phone\": \"+52 555 123 4567\",\n  \"wallet\": {\n    \"currency\": \"MXN\",\n    \"provider\": \"InterledgerTestNet\"\n  }\n}",
+					"raw": "{\n  \"name\": { \"first\": \"Pepe\", \"last\": \"Pecas Picapapas\" },\n  \"email\": \"miguel.zavala@example.com\",\n  \"phone\": \"+52 555 123 4567\",\n  \"wallet\": {\n    \"currency\": \"MXN\",\n    \"provider\": \"InterledgerTestNet\"\n  }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -31,6 +31,127 @@
 						"api",
 						"users",
 						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Construcción de vivienda para familia López\",\n  \"description\": \"Proyecto de vivienda financiado a distancia, con control de entregas y pagos verificados.\",\n  \"ownerId\": \"usr_2cec15aa-3427-4573-9efb-63a6a5091372\",\n  \"budget\": {\n    \"total\": 250000,\n    \"currency\": \"MXN\"\n  },\n  \"participants\": [\n    { \"userId\": \"usr_2cec15aa-3427-4573-9efb-63a6a5091372\", \"rol\": \"sender\" }\n  ],\n  \"phases\": []\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-add-participant",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"rol\": \"sender\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00/participants",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00",
+						"participants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-add-phase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"rol\": \"receiver\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00/participants",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00",
+						"participants"
 					]
 				}
 			},
