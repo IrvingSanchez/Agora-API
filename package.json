@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "firebase": "^12.5.0",
     "firebase-admin": "^13.6.0",
     "fs-extra": "^11.3.2",
     "helmet": "^8.1.0",

@@ -16,4 +16,5 @@ if (!admin.apps.length) {
 }
 
 export const db = getFirestore(admin.app(), 'development');
+export const FieldValue = admin.firestore.FieldValue
 db.settings({ ignoreUndefinedProperties: true }); 
