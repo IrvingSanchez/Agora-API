@@ -23,4 +23,23 @@ export default class UserController {
         .json({ success: false, message: (error as Error).message })
     }
   }
+
+  public static async updateWallet  (req: Request, res: Response): Promise<void> {
+  try {
+    const { userId } = req.params
+    const walletData = req.body
+
+    const updatedUser = await UserService.updateUserWallet(userId, walletData)
+
+    res.status(200).json({
+      message: 'Wallet del usuario actualizada exitosamente',
+      data: updatedUser
+    })
+  } catch (error: any) {
+    res.status(400).json({
+      error: true,
+      message: error.message || 'Error al actualizar la wallet'
+    })
+  }
+}
 }

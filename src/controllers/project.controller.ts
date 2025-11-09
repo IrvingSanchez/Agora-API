@@ -61,9 +61,7 @@ export default class ProjectController {
 
 public static async createTransaction(req: Request, res: Response): Promise<void> {
   try {
-    const { projectId, phaseId, requireId } = req.params
-    const txData = { ...req.body, projectId, phaseId, requireId }
-    const newTx = await ProjectService.createTransaction(txData)
+    const newTx = await ProjectService.createTransaction(req.body)
     res.status(201).json({ message: 'Transaction creada correctamente', transaction: newTx })
   } catch (error: any) {
     res.status(400).json({ error: error.message })

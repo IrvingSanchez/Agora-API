@@ -38,6 +38,7 @@ export interface Project {
 export interface Require {
   id: string
   projectId: string
+  phaseId: string
   name: string
   description: string
   proofs?: string[]
@@ -55,6 +56,8 @@ export interface Transaction {
   requireId: string
   fromWallet: { interledgerAddress: string; userId: string }
   toWallet: { interledgerAddress: string; userId: string }
+  accessTokenValue?: string
+  accessTokenUri?: string
   amount: number
   currency: string
   provider: string
@@ -156,24 +159,26 @@ export default class ProjectService {
     return newPhase
   }
 
-public static async createRequire(
-    projectCustomId: string,
+  public static async createRequire(
+    projectId: string,
     phaseId: string,
-    requireData: Omit<Require, 'id' | 'createdAt' | 'updatedAt'>
+    requireData: Omit<Require, 'id' | 'createdAt' | 'updatedAt' | 'projectId' | 'phaseId'>
   ): Promise<Require> {
-    const snapshot = await db.collection('projects').where('id', '==', projectCustomId).get()
+    const snapshot = await db.collection('projects').where('id', '==', projectId).get()
     if (snapshot.empty) {
-      throw new Error(`Proyecto con id ${projectCustomId} no encontrado`)
+      throw new Error(`Proyecto con id ${projectId} no encontrado`)
     }
 
     const projectDoc = snapshot.docs[0]
     const projectData = projectDoc.data()
     const now = new Date().toISOString()
 
-    // ✅ Generar nuevo Require
+    // ✅ Crear el objeto Require completo
     const newRequire: Require = {
       ...requireData,
       id: `req_${uuidv4()}`,
+      projectId,
+      phaseId,
       proofs: [],
       transactions: [],
       progress: 0,
@@ -182,16 +187,16 @@ public static async createRequire(
       updatedAt: now
     }
 
-    // ✅ Guardar en colección global
+    // ✅ Guardar el require en su colección global
     await db.collection('requires').doc(newRequire.id).set(newRequire)
 
-    // ✅ Actualizar la fase correspondiente dentro del proyecto
+    // ✅ Actualizar la fase dentro del proyecto agregando solo el id del require
     const updatedPhases = (projectData.phases || []).map((phase: any) => {
       if (phase.id === phaseId) {
         const existingRequires = phase.requires || []
         return {
           ...phase,
-          requires: [...existingRequires, newRequire],
+          requires: [...existingRequires, newRequire.id],
           updatedAt: now
         }
       }
@@ -207,51 +212,37 @@ public static async createRequire(
   }
 
 public static async createTransaction(
-    txData: Omit<Transaction, 'id' | 'timestamp'> & { projectId: string; phaseId?: string; requireId: string }
+    txData: Omit<Transaction, 'id' | 'timestamp'>
   ): Promise<Transaction> {
-    const { projectId, phaseId, requireId } = txData
-    // Buscar proyecto
-    const projectSnapshot = await db.collection('projects').where('id', '==', projectId).get()
-    if (projectSnapshot.empty) {
-      throw new Error(`Proyecto con id ${projectId} no encontrado`)
+    const { requireId } = txData
+
+    // Verificar que el require exista
+    const requireSnapshot = await db.collection('requires').where('id', '==', requireId).get()
+    if (requireSnapshot.empty) {
+      throw new Error(`Require con id ${requireId} no encontrado`)
     }
 
-    const projectDoc = projectSnapshot.docs[0]
-    const projectRef = projectDoc.ref
-    const projectData = projectDoc.data()
+    const requireDoc = requireSnapshot.docs[0]
+    const requireRef = requireDoc.ref
+    const requireData = requireDoc.data()
+    const now = new Date().toISOString()
 
-    // Buscar fase dentro del proyecto
-    const phaseIndex = projectData.phases?.findIndex((p: any) => p.id === phaseId)
-    if (phaseIndex === -1 || phaseIndex === undefined) {
-      throw new Error(`Fase con id ${phaseId} no encontrada en el proyecto ${projectId}`)
-    }
-
-    // Buscar require dentro de la fase
-    const phase = projectData.phases[phaseIndex]
-    const requireIndex = phase.requires?.findIndex((r: any) => r.id === requireId)
-    if (requireIndex === -1 || requireIndex === undefined) {
-      throw new Error(`Require con id ${requireId} no encontrado en la fase ${phaseId}`)
-    }
-
-    // Crear transacción
+    // Crear la transacción
     const newTx: Transaction = {
       ...txData,
       id: `txn_${uuidv4()}`,
-      requireId,
-      timestamp: new Date().toISOString()
+      timestamp: now
     }
 
-    // Agregar transacción dentro del require
-    const updatedProject = { ...projectData }
-    updatedProject.phases[phaseIndex].requires[requireIndex].transactions = [
-      ...(phase.requires[requireIndex].transactions || []),
-      newTx
-    ]
+    // Guardar la transacción en su colección global
+    await db.collection('transactions').doc(newTx.id).set(newTx)
 
-    updatedProject.updatedAt = new Date().toISOString()
-
-    // Guardar cambios
-    await projectRef.update(updatedProject)
+    // Agregar el id de la transacción dentro del require correspondiente
+    const updatedTransactions = [...(requireData.transactions || []), newTx.id]
+    await requireRef.update({
+      transactions: updatedTransactions,
+      updatedAt: now
+    })
 
     return newTx
   }

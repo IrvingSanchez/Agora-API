@@ -26,6 +26,14 @@ export interface User {
   updatedAt: string
 }
 
+export interface WalletUpdateInput {
+  interledgerAddress?: string | null
+  publicKey?: string | null
+  currency?: string
+  provider?: string
+  balance?: number
+}
+
 export default class UserService {
   public static async registerUsers (data: UserInput): Promise<User> {
     try {
@@ -80,6 +88,47 @@ export default class UserService {
     } catch (error) {
       console.error('Error consultando usuarios:', error)
       throw new Error('Error consultando usuarios')
+    }
+  }
+
+  public static async updateUserWallet(userId: string, walletData: WalletUpdateInput): Promise<User> {
+    try {
+      // 1️⃣ Leer usuarios locales
+      const users = await readUsersFile()
+
+      // 2️⃣ Buscar usuario localmente
+      const userIndex = users.findIndex(u => u.id === userId)
+      if (userIndex === -1) {
+        throw new Error(`Usuario con id ${userId} no encontrado`)
+      }
+
+      // 3️⃣ Actualizar datos de wallet (solo los campos enviados)
+      users[userIndex].wallet = {
+        ...users[userIndex].wallet,
+        ...walletData
+      }
+      users[userIndex].updatedAt = new Date().toISOString()
+
+      // 4️⃣ Guardar cambios en archivo local
+      await writeUsersFile(users)
+
+      // 5️⃣ Actualizar en Firestore
+      const userRef = db.collection('users').where('id', '==', userId)
+      const snapshot = await userRef.get()
+      if (snapshot.empty) {
+        throw new Error(`Usuario con id ${userId} no encontrado en Firestore`)
+      }
+
+      const docId = snapshot.docs[0].id
+      await db.collection('users').doc(docId).update({
+        wallet: users[userIndex].wallet,
+        updatedAt: users[userIndex].updatedAt
+      })
+
+      return users[userIndex]
+    } catch (error) {
+      console.error('Error actualizando wallet del usuario:', error)
+      throw new Error('Error actualizando wallet del usuario')
     }
   }
 }
