@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": { \"first\": \"Pepe\", \"last\": \"Pecas Picapapas\" },\n  \"email\": \"miguel.zavala@example.com\",\n  \"phone\": \"+52 555 123 4567\",\n  \"wallet\": {\n    \"currency\": \"MXN\",\n    \"provider\": \"InterledgerTestNet\"\n  }\n}",
+					"raw": "{\n  \"name\": { \"first\": \"Maria\", \"last\": \"López López\" },\n  \"email\": \"maria.lopez@example.com\",\n  \"phone\": \"+52 555 123 4567\",\n  \"wallet\": {\n    \"currency\": \"MXN\",\n    \"provider\": \"InterledgerTestNet\"\n  }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -127,43 +127,13 @@
 			"response": []
 		},
 		{
-			"name": "project-get-all",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Construcción de vivienda para familia López\",\n  \"description\": \"Proyecto de vivienda financiado a distancia, con control de entregas y pagos verificados.\",\n  \"ownerId\": \"usr_2cec15aa-3427-4573-9efb-63a6a5091372\",\n  \"budget\": {\n    \"total\": 250000,\n    \"currency\": \"MXN\"\n  },\n  \"participants\": [],\n  \"phases\": []\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/api/projects/all",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"api",
-						"projects",
-						"all"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "project-add-participant",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"userId\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"rol\": \"sender\"\n}",
+					"raw": "{\n  \"userId\": \"usr_35357748-555f-4a10-9dc6-ba14417a0625\",\n  \"rol\": \"sender\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -171,7 +141,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/projects/prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c/participants",
+					"raw": "http://localhost:4000/api/projects/prj_b868403a-8806-4ca5-9894-f2ea3f169e97/participants",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -180,8 +150,102 @@
 					"path": [
 						"api",
 						"projects",
-						"prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c",
+						"prj_b868403a-8806-4ca5-9894-f2ea3f169e97",
 						"participants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-add-phase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Iluminación\",\n  \"description\": \"Acabados de la vivienda\",\n  \"order\": 2,\n  \"status\": \"active\",\n  \"requires\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_b868403a-8806-4ca5-9894-f2ea3f169e97/phases",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_b868403a-8806-4ca5-9894-f2ea3f169e97",
+						"phases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-add-require",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Materiales para cimiento - etapa 1\",\n  \"description\": \"Compra de azulejo para el piso de la vivienda.\",\n  \"supplier\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"cost\": {\n    \"amount\": 50000,\n    \"currency\": \"MXN\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_b868403a-8806-4ca5-9894-f2ea3f169e97/phases/phs_b5378550-f80c-4b96-9fd8-959b6f87665e/requires",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_b868403a-8806-4ca5-9894-f2ea3f169e97",
+						"phases",
+						"phs_b5378550-f80c-4b96-9fd8-959b6f87665e",
+						"requires"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-add-transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"requireId\": \"req_312b20fc-54a5-45ef-a745-9e30cd903764\",\n  \"fromWallet\": {},\n  \"toWallet\": {},\n  \"amount\": 12000,\n  \"currency\": \"MXN\",\n  \"provider\": \"Stripe\",\n  \"reference\": \"Pago inicial de servicios\",\n  \"status\": \"pending\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"transactions"
 					]
 				}
 			},
@@ -281,13 +345,13 @@
 			"response": []
 		},
 		{
-			"name": "project-add-phase",
+			"name": "project-get-all",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Acabado\",\n  \"description\": \"Acabados de la vivienda\",\n  \"order\": 3,\n  \"status\": \"active\",\n  \"requires\": []\n}",
+					"raw": "{\n  \"title\": \"Construcción de vivienda para familia López\",\n  \"description\": \"Proyecto de vivienda financiado a distancia, con control de entregas y pagos verificados.\",\n  \"ownerId\": \"usr_2cec15aa-3427-4573-9efb-63a6a5091372\",\n  \"budget\": {\n    \"total\": 250000,\n    \"currency\": \"MXN\"\n  },\n  \"participants\": [],\n  \"phases\": []\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -295,7 +359,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/projects/prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c/phases",
+					"raw": "http://localhost:4000/api/projects/all",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -304,41 +368,7 @@
 					"path": [
 						"api",
 						"projects",
-						"prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c",
-						"phases"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project-add-require",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Materiales para cimiento - etapa 1\",\n  \"description\": \"Compra de azulejo para el piso de la vivienda.\",\n  \"supplier\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"cost\": {\n    \"amount\": 50000,\n    \"currency\": \"MXN\"\n  }\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/api/projects/prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c/phases/phs_8352f812-6f27-4afc-abaf-e3b64dccf694/requires",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"api",
-						"projects",
-						"prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c",
-						"phases",
-						"phs_8352f812-6f27-4afc-abaf-e3b64dccf694",
-						"requires"
+						"all"
 					]
 				}
 			},
@@ -370,36 +400,6 @@
 						"projects",
 						"require",
 						"req_1b732dfa-4438-4fc7-b003-2be331f4db43"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project-add-transaction",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"requireId\": \"req_afbdcd41-7807-4798-a350-cd30aeb3b913\",\n  \"fromWallet\": {},\n  \"toWallet\": {},\n  \"amount\": 12000,\n  \"currency\": \"MXN\",\n  \"provider\": \"Stripe\",\n  \"reference\": \"Pago inicial de servicios\",\n  \"status\": \"pending\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:4000/api/projects/transactions",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"api",
-						"projects",
-						"transactions"
 					]
 				}
 			},
