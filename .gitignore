@@ -1,2 +1,6 @@
 node_modules/*
 Users.json
+private.key
+test-op.js
+convert.js
+custom.js
