@@ -127,6 +127,36 @@
 			"response": []
 		},
 		{
+			"name": "project-get-all",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Construcción de vivienda para familia López\",\n  \"description\": \"Proyecto de vivienda financiado a distancia, con control de entregas y pagos verificados.\",\n  \"ownerId\": \"usr_2cec15aa-3427-4573-9efb-63a6a5091372\",\n  \"budget\": {\n    \"total\": 250000,\n    \"currency\": \"MXN\"\n  },\n  \"participants\": [],\n  \"phases\": []\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "project-add-participant",
 			"request": {
 				"method": "POST",
@@ -152,6 +182,99 @@
 						"projects",
 						"prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c",
 						"participants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-requires-get-by-project",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/requires/prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"requires",
+						"prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-get-phases",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c/get-phases",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_7a6c9eb9-2345-47a7-bbf3-88768e0c294c",
+						"get-phases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-get-phases-id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/phases/phs_133159f3-0677-47a2-a78a-8900ce42786a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"phases",
+						"phs_133159f3-0677-47a2-a78a-8900ce42786a"
 					]
 				}
 			},
@@ -216,6 +339,37 @@
 						"phases",
 						"phs_8352f812-6f27-4afc-abaf-e3b64dccf694",
 						"requires"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-get-require",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/require/req_1b732dfa-4438-4fc7-b003-2be331f4db43",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"require",
+						"req_1b732dfa-4438-4fc7-b003-2be331f4db43"
 					]
 				}
 			},
