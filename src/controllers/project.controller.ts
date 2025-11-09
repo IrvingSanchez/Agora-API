@@ -32,8 +32,8 @@ export default class ProjectController {
     try {
       const { projectId } = req.params
       const phase: ProjectPhase = req.body
-      await ProjectService.addPhase(projectId, phase)
-      res.status(200).json({ success: true, message: 'Fase agregada exitosamente' })
+      const newPhase = await ProjectService.addPhase(projectId, phase)
+      res.status(200).json({ success: true, data: newPhase })
     } catch (error) {
       console.error('Error agregando fase:', error)
       res.status(500).json({ success: false, message: (error as Error).message })

@@ -18,6 +18,8 @@ export interface ProjectPhase {
   order?: number
   status?: string
   requires?: string[] // IDs de Requires
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Project {
@@ -122,23 +124,36 @@ export default class ProjectService {
     })
   }
 
-  // Agregar fase
-  public static async addPhase(
+  public static async addPhase (
     projectCustomId: string,
-    phase: Omit<ProjectPhase, 'id'>
-  ): Promise<void> {
-    const snapshot = await db.collection('projects').where('id', '==', projectCustomId).get()
+    phase: Omit<ProjectPhase, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ProjectPhase> {
+    // Buscar el proyecto por su id personalizado
+    const snapshot = await db
+      .collection('projects')
+      .where('id', '==', projectCustomId)
+      .get()
 
     if (snapshot.empty) {
       throw new Error(`Proyecto con id ${projectCustomId} no encontrado`)
     }
 
     const projectDoc = snapshot.docs[0].ref
+    const now = new Date().toISOString()
+
+    const newPhase: ProjectPhase = {
+      ...phase,
+      id: `phs_${uuidv4()}`,
+      createdAt: now,
+      updatedAt: now
+    }
 
     await projectDoc.update({
-      phases: FieldValue.arrayUnion(phase),
-      updatedAt: new Date().toISOString()
+      phases: FieldValue.arrayUnion(newPhase),
+      updatedAt: now
     })
+
+    return newPhase
   }
 
   // Crear Require

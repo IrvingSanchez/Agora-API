@@ -133,7 +133,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"userId\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"rol\": \"receiver\"\n}",
+					"raw": "{\n  \"name\": \"Acabado\",\n  \"description\": \"Acabados de la vivienda\",\n  \"order\": 3,\n  \"status\": \"active\",\n  \"requires\": []\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -141,7 +141,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/projects/prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00/participants",
+					"raw": "http://localhost:4000/api/projects/prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00/phases",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -151,7 +151,7 @@
 						"api",
 						"projects",
 						"prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00",
-						"participants"
+						"phases"
 					]
 				}
 			},
