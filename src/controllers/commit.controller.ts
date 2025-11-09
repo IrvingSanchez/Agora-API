@@ -46,7 +46,7 @@ export default class CommitController {
                         start: ['redirect'],
                         finish: {
                             method: 'redirect',
-                            uri: 'http://localhost:4000/api/commit/grant/callback',
+                            uri: process.env.CALLBACK_URL + '/api/commit/grant/callback',
                             nonce: "NONCE",
                         }
                     },
