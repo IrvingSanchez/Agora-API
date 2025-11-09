@@ -10,8 +10,8 @@ router.post('/:projectId/participants', ProjectController.addParticipant)
 router.post('/:projectId/phases', ProjectController.addPhase)
 
 // Requires, Transactions, Proofs
-router.post('/requires', ProjectController.createRequire)
-router.post('/transactions', ProjectController.createTransaction)
+router.post('/:projectId/phases/:phaseId/requires', ProjectController.createRequire)
+router.post('/:projectId/phases/:phaseId/requires/:requireId/transactions', ProjectController.createTransaction)
 router.post('/proofs', ProjectController.createProof)
 
 export default router

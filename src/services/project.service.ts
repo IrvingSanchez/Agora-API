@@ -156,12 +156,21 @@ export default class ProjectService {
     return newPhase
   }
 
-  // Crear Require
-  public static async createRequire (
+public static async createRequire(
+    projectCustomId: string,
+    phaseId: string,
     requireData: Omit<Require, 'id' | 'createdAt' | 'updatedAt'>
   ): Promise<Require> {
-    const requireRef = db.collection('requires').doc()
+    const snapshot = await db.collection('projects').where('id', '==', projectCustomId).get()
+    if (snapshot.empty) {
+      throw new Error(`Proyecto con id ${projectCustomId} no encontrado`)
+    }
+
+    const projectDoc = snapshot.docs[0]
+    const projectData = projectDoc.data()
     const now = new Date().toISOString()
+
+    // ✅ Generar nuevo Require
     const newRequire: Require = {
       ...requireData,
       id: `req_${uuidv4()}`,
@@ -173,18 +182,77 @@ export default class ProjectService {
       updatedAt: now
     }
 
-    await requireRef.set(newRequire)
+    // ✅ Guardar en colección global
+    await db.collection('requires').doc(newRequire.id).set(newRequire)
+
+    // ✅ Actualizar la fase correspondiente dentro del proyecto
+    const updatedPhases = (projectData.phases || []).map((phase: any) => {
+      if (phase.id === phaseId) {
+        const existingRequires = phase.requires || []
+        return {
+          ...phase,
+          requires: [...existingRequires, newRequire],
+          updatedAt: now
+        }
+      }
+      return phase
+    })
+
+    await projectDoc.ref.update({
+      phases: updatedPhases,
+      updatedAt: now
+    })
+
     return newRequire
   }
 
-  // Crear Transaction
-  public static async createTransaction (
-    tx: Omit<Transaction, 'id' | 'timestamp'>
+public static async createTransaction(
+    txData: Omit<Transaction, 'id' | 'timestamp'> & { projectId: string; phaseId?: string; requireId: string }
   ): Promise<Transaction> {
-    const txRef = db.collection('transactions').doc()
-    const now = new Date().toISOString()
-    const newTx: Transaction = { ...tx, id: `txn_${uuidv4()}`, timestamp: now }
-    await txRef.set(newTx)
+    const { projectId, phaseId, requireId } = txData
+    // Buscar proyecto
+    const projectSnapshot = await db.collection('projects').where('id', '==', projectId).get()
+    if (projectSnapshot.empty) {
+      throw new Error(`Proyecto con id ${projectId} no encontrado`)
+    }
+
+    const projectDoc = projectSnapshot.docs[0]
+    const projectRef = projectDoc.ref
+    const projectData = projectDoc.data()
+
+    // Buscar fase dentro del proyecto
+    const phaseIndex = projectData.phases?.findIndex((p: any) => p.id === phaseId)
+    if (phaseIndex === -1 || phaseIndex === undefined) {
+      throw new Error(`Fase con id ${phaseId} no encontrada en el proyecto ${projectId}`)
+    }
+
+    // Buscar require dentro de la fase
+    const phase = projectData.phases[phaseIndex]
+    const requireIndex = phase.requires?.findIndex((r: any) => r.id === requireId)
+    if (requireIndex === -1 || requireIndex === undefined) {
+      throw new Error(`Require con id ${requireId} no encontrado en la fase ${phaseId}`)
+    }
+
+    // Crear transacción
+    const newTx: Transaction = {
+      ...txData,
+      id: `txn_${uuidv4()}`,
+      requireId,
+      timestamp: new Date().toISOString()
+    }
+
+    // Agregar transacción dentro del require
+    const updatedProject = { ...projectData }
+    updatedProject.phases[phaseIndex].requires[requireIndex].transactions = [
+      ...(phase.requires[requireIndex].transactions || []),
+      newTx
+    ]
+
+    updatedProject.updatedAt = new Date().toISOString()
+
+    // Guardar cambios
+    await projectRef.update(updatedProject)
+
     return newTx
   }
 

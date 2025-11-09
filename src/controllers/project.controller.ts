@@ -40,27 +40,35 @@ export default class ProjectController {
     }
   }
 
-  // Crear Require
-  public static async createRequire(req: Request, res: Response) {
+  public static async createRequire(req: Request, res: Response): Promise<void> {
     try {
-      const requireObj = await ProjectService.createRequire(req.body)
-      res.status(201).json({ success: true, data: requireObj })
-    } catch (error) {
-      console.error('Error creating require:', error)
-      res.status(500).json({ success: false, message: (error as Error).message })
+      const { projectId, phaseId } = req.params
+      const requireData = req.body
+
+      const newRequire = await ProjectService.createRequire(projectId, phaseId, requireData)
+      res.status(201).json({
+        message: 'Require creado correctamente',
+        require: newRequire
+      })
+    } catch (error: any) {
+      console.error('Error creando require:', error)
+      res.status(500).json({
+        error: 'Error creando require',
+        details: error.message
+      })
     }
   }
 
-  // Crear Transaction
-  public static async createTransaction(req: Request, res: Response) {
-    try {
-      const tx = await ProjectService.createTransaction(req.body)
-      res.status(201).json({ success: true, data: tx })
-    } catch (error) {
-      console.error('Error creating transaction:', error)
-      res.status(500).json({ success: false, message: (error as Error).message })
-    }
+public static async createTransaction(req: Request, res: Response): Promise<void> {
+  try {
+    const { projectId, phaseId, requireId } = req.params
+    const txData = { ...req.body, projectId, phaseId, requireId }
+    const newTx = await ProjectService.createTransaction(txData)
+    res.status(201).json({ message: 'Transaction creada correctamente', transaction: newTx })
+  } catch (error: any) {
+    res.status(400).json({ error: error.message })
   }
+}
 
   // Crear Proof
   public static async createProof(req: Request, res: Response) {
