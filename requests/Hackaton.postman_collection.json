@@ -156,6 +156,74 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "project-add-require",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Materiales de loza - etapa 2\",\n  \"description\": \"Compra de azulejo para el piso de la vivienda.\",\n  \"supplier\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\",\n  \"cost\": {\n    \"amount\": 50000,\n    \"currency\": \"MXN\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00/phases/phs_fb0be4a6-0c1a-4ba9-9e82-61466201235f/requires",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00",
+						"phases",
+						"phs_fb0be4a6-0c1a-4ba9-9e82-61466201235f",
+						"requires"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project-add-transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromWallet\": {\n    \"interledgerAddress\": \"g.ilp.from.user123\",\n    \"userId\": \"usr_2cec15aa-3427-4573-9efb-63a6a5091372\"\n  },\n  \"toWallet\": {\n    \"interledgerAddress\": \"g.ilp.to.user456\",\n    \"userId\": \"usr_c9ef24c7-5559-4cf5-a13a-bf02d491dea2\"\n  },\n  \"amount\": 15000,\n  \"currency\": \"MXN\",\n  \"provider\": \"Stripe\",\n  \"reference\": \"Pago de avance de obra\",\n  \"status\": \"pending\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/projects/prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00/phases/phs_fb0be4a6-0c1a-4ba9-9e82-61466201235f/requires/req_5865dd50-fcee-45b1-9265-1cd2e9246e27/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"projects",
+						"prj_af5eaaf9-42c4-463f-9b8f-bbe34c2d9d00",
+						"phases",
+						"phs_fb0be4a6-0c1a-4ba9-9e82-61466201235f",
+						"requires",
+						"req_5865dd50-fcee-45b1-9265-1cd2e9246e27",
+						"transactions"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
