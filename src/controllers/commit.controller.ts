@@ -143,7 +143,7 @@ export default class CommitController {
                         access: [
                             {
                                 type: "incoming-payment",
-                                actions: ["create", 'read','complete'],
+                                actions: ["create", 'read', 'complete'],
                             }
                         ]
                     }
@@ -224,6 +224,10 @@ export default class CommitController {
 
             console.log({ outgoingPayment });
 
+            function sleep(ms: number) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            await sleep(5000)
             const completedIncomingPayment = await client.incomingPayment.complete({
                 url: incomingPayment.id,
                 accessToken: incomingPaymentGrant.access_token.value,
