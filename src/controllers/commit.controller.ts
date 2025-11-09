@@ -164,10 +164,7 @@ export default class CommitController {
                     accessToken: incomingPaymentGrant.access_token.value
                 },
                 {
-                    walletAddress: receivingWalletAddress.id,
-            
-                    expiresAt: new Date(Date.now() + 60_000 * 10).toISOString(),
-
+                    walletAddress: receivingWalletAddress.id
                 }
 
             );
