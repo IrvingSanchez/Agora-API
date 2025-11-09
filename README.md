@@ -1,6 +1,10 @@
 # Agora API
 API Client for Agora Web App
 
+## Useful Links  
+- [Final Pitch](https://docs.google.com/presentation/d/1HXKqmsZyCMxQtghUePKEA-U3StOZPRZcw0MA3GHpHi8/edit?usp=sharing)
+- [Demo Video](https://drive.google.com/file/d/1naexVmnWrv0L6NdkERBsKv2V_-4Mp60w/view?usp=sharing)
+
 ### How it works
 
 Open Payments implementation its under POST /api/commit resource.
